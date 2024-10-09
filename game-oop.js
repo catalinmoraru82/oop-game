@@ -1,6 +1,60 @@
-//implement Liskov for Character with Special Abilities
-//move attack method to the character
 
+class Character {
+  constructor(health, strength, defence, speed, luck) {
+    this.health = health;
+    this.strength = strength;
+    this.defence = defence;
+    this.speed = speed;
+    this.luck = luck;
+  }
+
+  attack()
+  {}
+}
+
+//Implement Liskov Principle
+// class CharacterWithSpecialAbilities extends Character
+// {
+// }
+
+// class CharacterWithOutSpecialAbilities extends Character
+// {
+// }
+
+class Hero extends Character {
+}
+
+class Beast extends Character {
+}
+
+class Game {
+  start(attacker, defender) {
+    const damage = attacker.strength - defender.defence;
+    console.log("-----------------");
+    console.log("Game has started");
+    while (attacker.health > 0 && defender.health > 0) {
+      console.log(`${attacker.constructor.name} attacks and deals ${damage} damage`);
+      defender.health -= damage;
+      if (defender.health < 0) {
+        console.log(`${defender.constructor.name} has lost the battle`);
+        console.log(`!!! ${attacker.constructor.name} is the winner !!!`);
+        break;
+      }
+      console.log(`${defender.constructor.name} has ${defender.health} health remaining.`);
+      [attacker, defender] = SwitchPlayers.switch([attacker, defender]) //I don't switch the actual players
+    }
+  }
+}
+
+class SwitchPlayers {
+  static switch(playerList) {
+    console.log("Switching players...");
+    const [p1, p2] = playerList;
+    console.log(`The attacker is ${p2.constructor.name}`);
+    console.log(`The defender is ${p1.constructor.name}`);
+    return [p2, p1];
+  }
+}
 
 //static utility classes
 class Stats {
@@ -30,61 +84,8 @@ class Stats {
 }
 
 //utility class to switch players, attacker becomes defender and defender becomes attacker
-class SwitchPlayers {
-  static switch(playerList) {
-    console.log("Switching players...");
-    const [p1, p2] = playerList;
-    console.log(`The attacker is ${p2.constructor.name}`);
-    console.log(`The defender is ${p1.constructor.name}`);
-    return [p2, p1];
-  }
-}
 
-class Game {
-  start(attacker, defender) {
-    const damage = attacker.strength - defender.defence;
-    console.log("-----------------");
-    console.log("Game has started");
-    while (attacker.health > 0 && defender.health > 0) {
-      console.log(`${attacker.constructor.name} attacks and deals ${damage} damage`);
-      defender.health -= damage;
-      if (defender.health < 0) {
-        console.log(`${defender.constructor.name} has lost the battle`);
-        console.log(`!!! ${attacker.constructor.name} is the winner !!!`);
-        break;
-      }
-      console.log(`${defender.constructor.name} has ${defender.health} health remaining.`);
-      [attacker, defender] = SwitchPlayers.switch([attacker, defender]) //I don't switch the actual players
-    }
-  }
-}
 
-class Character {
-  constructor(health, strength, defence, speed, luck) {
-    this.health = health;
-    this.strength = strength;
-    this.defence = defence;
-    this.speed = speed;
-    this.luck = luck;
-  }
-
-  attack()
-  {}
-}
-
-// class CharacterWithSpecialAbilities extends Character
-// {
-// }
-
-// class CharacterWithOutSpecialAbilities extends Character
-// {
-// }
-
-class Hero extends Character {
-}
-
-class Beast extends Character {
-}
 
 class StartingPlayer {
   constructor(playerList) {

@@ -1,0 +1,2 @@
+- implement Liskov for Character with Special Abilities
+- move attack method to the character
