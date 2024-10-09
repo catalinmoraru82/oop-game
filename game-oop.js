@@ -56,37 +56,6 @@ class SwitchPlayers {
   }
 }
 
-//static utility classes
-class Stats {
-  constructor() {
-    throw new Error("GenerateStats class cannot be instantiated")
-  }
-
-  static health(min, max) {
-    return Math.floor(Math.random() * (max - min + 1) + min);
-  }
-
-  static strength(min, max) {
-    return Math.floor(Math.random() * (max - min + 1) + min);
-  }
-
-  static defence(min, max) {
-    return Math.floor(Math.random() * (max - min + 1) + min);
-  }
-
-  static speed(min, max) {
-    return Math.floor(Math.random() * (max - min + 1) + min);
-  }
-
-  static luck(min, max) {
-    return Math.floor(Math.random() * (max - min + 1) + min);
-  }
-}
-
-//utility class to switch players, attacker becomes defender and defender becomes attacker
-
-
-
 class StartingPlayer {
   constructor(playerList) {
     this.playerList = playerList;
@@ -122,6 +91,34 @@ class Log {
 
   static defender(defender) {
     console.log(`The defender is the ${defender.constructor.name}`)
+  }
+}
+
+
+//static utility classes
+class Stats {
+  constructor() {
+    throw new Error("GenerateStats class cannot be instantiated")
+  }
+
+  static health(min, max) {
+    return Math.floor(Math.random() * (max - min + 1) + min);
+  }
+
+  static strength(min, max) {
+    return Math.floor(Math.random() * (max - min + 1) + min);
+  }
+
+  static defence(min, max) {
+    return Math.floor(Math.random() * (max - min + 1) + min);
+  }
+
+  static speed(min, max) {
+    return Math.floor(Math.random() * (max - min + 1) + min);
+  }
+
+  static luck(min, max) {
+    return Math.floor(Math.random() * (max - min + 1) + min);
   }
 }
 
