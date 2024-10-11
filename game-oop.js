@@ -1,5 +1,6 @@
 
 class Character {
+  name;
   constructor(health, strength, defence, speed, luck) {
     this.health = health;
     this.strength = strength;
@@ -8,18 +9,42 @@ class Character {
     this.luck = luck;
   }
 
-  attack()
-  {}
+  specialAbilities()
+  {
+    throw new Error("This method should be overrinden");
+  }
 }
 
-//Implement Liskov Principle
-// class CharacterWithSpecialAbilities extends Character
-// {
-// }
+//Liskov Principle
+class CharacterWithSpecialAbilities extends Character
+{
+  name = "Hero";
 
-// class CharacterWithOutSpecialAbilities extends Character
-// {
-// }
+  specialAbilities()
+  {
+    this.rapidStrike()
+    this.magicShield()
+  }
+  
+  rapidStrike()
+  {
+    console.log("This is a rapidStrike")
+  }
+
+  magicShield()
+  {
+    console.log("This is the masgic Shield")
+  }
+}
+
+class CharacterWithOutSpecialAbilities extends Character
+{
+  name = "Beast";
+  specialAbilities()
+  {
+    throw new Error("This method should be overrinden");
+  }
+}
 
 class Hero extends Character {
 }
@@ -27,31 +52,12 @@ class Hero extends Character {
 class Beast extends Character {
 }
 
-class Game {
-  start(attacker, defender) {
-    const damage = attacker.strength - defender.defence;
-    console.log("-----------------");
-    console.log("Game has started");
-    while (attacker.health > 0 && defender.health > 0) {
-      console.log(`${attacker.constructor.name} attacks and deals ${damage} damage`);
-      defender.health -= damage;
-      if (defender.health < 0) {
-        console.log(`${defender.constructor.name} has lost the battle`);
-        console.log(`!!! ${attacker.constructor.name} is the winner !!!`);
-        break;
-      }
-      console.log(`${defender.constructor.name} has ${defender.health} health remaining.`);
-      [attacker, defender] = SwitchPlayers.switch([attacker, defender]) //I don't switch the actual players
-    }
-  }
-}
-
 class SwitchPlayers {
   static switch(playerList) {
     console.log("Switching players...");
     const [p1, p2] = playerList;
-    console.log(`The attacker is ${p2.constructor.name}`);
-    console.log(`The defender is ${p1.constructor.name}`);
+    console.log(`The attacker is ${p2.name}`);
+    console.log(`The defender is ${p1.name}`);
     return [p2, p1];
   }
 }
@@ -72,7 +78,7 @@ class StartingPlayer {
 //class used to log players and stats
 class Log {
   constructor() {
-    throw new Error(`Class ${this.constructor.name} cannot be instantiated.`)
+    throw new Error(`Class ${this.name} cannot be instantiated.`)
   }
 
   static players(playerList) {
@@ -86,11 +92,11 @@ class Log {
   }
 
   static attacker(attacker) {
-    console.log(`The attacker is the ${attacker.constructor.name}`)
+    console.log(`The attacker is the ${attacker.name}`)
   }
 
   static defender(defender) {
-    console.log(`The defender is the ${defender.constructor.name}`)
+    console.log(`The defender is the ${defender.name}`)
   }
 }
 
@@ -122,7 +128,29 @@ class Stats {
   }
 }
 
-const hero = new Hero(
+
+class Game {
+  start(attacker, defender) {
+    const damage = attacker.strength - defender.defence;
+    console.log("-----------------");
+    console.log("Game has started");
+    while (attacker.health > 0 && defender.health > 0) {
+      console.log(`${attacker.name} attacks and deals ${damage} damage`);
+      defender.health -= damage;
+      if (defender.health < 0) {
+        console.log(`${defender.name} has lost the battle`);
+        console.log(`!!! ${attacker.name} is the winner !!!`);
+        break;
+      }
+      console.log(`${defender.name} has ${defender.health} health remaining.`);
+      [attacker, defender] = SwitchPlayers.switch([attacker, defender]) //I don't switch the actual players
+    }
+  }
+}
+
+
+
+const hero = new CharacterWithSpecialAbilities(
   Stats.health(70, 100),
   Stats.strength(70, 80),
   Stats.defence(45, 55),
@@ -131,14 +159,13 @@ const hero = new Hero(
 )
 
 
-const beast = new Beast(
+const beast = new CharacterWithOutSpecialAbilities(
   Stats.health(60, 90),
   Stats.strength(60, 90),
   Stats.defence(40, 60),
   Stats.speed(40, 60),
   Stats.luck(0.25, 0.40)
 )
-
 Log.players([hero, beast]);
 const sPlayer = new StartingPlayer([hero, beast])
 const attacker = sPlayer.startingPlayer().attacker;
